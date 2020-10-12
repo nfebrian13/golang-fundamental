@@ -15,7 +15,7 @@ import (
 	   pointer, tipe data fungsi, slice, map, channel, interface kosong
 */
 
-func main() {
+func tipedata() {
 	var positiveNumber uint8 = 89
 	var negativeNumber int = -1243423644
 
