@@ -9,7 +9,7 @@ import (
 	|| kiri atau kanan
 	!  negasi / nilai kebalikan
 */
-func main() {
+func logika() {
 	var left bool = false
 	var right bool = true
 
