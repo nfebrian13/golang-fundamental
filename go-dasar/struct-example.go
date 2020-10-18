@@ -18,7 +18,7 @@ func structexample() {
 	s1.umur = 2
 
 	fmt.Println("name  :", s1.name)
-	fmt.Println("grade :", s1.grade)
+	fmt.Println("grade :", s1.umur)
 }
 
 type hewan struct {
