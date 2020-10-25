@@ -1,4 +1,4 @@
-package main
+package functionexmp
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 
 /* function.*/
 
-func main() {
+func functionexmp() {
 	hourday := time.Now().Hour() /* type inference */
 	greeting := getGreeting(hourday)
 	fmt.Println(greeting)
