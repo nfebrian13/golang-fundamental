@@ -1,10 +1,10 @@
-package main
+package loop
 
 import (
 	"fmt"
 )
 
-func main() {
+func loop() {
 	faktor := factorial(3)
 	fmt.Println(faktor)
 
