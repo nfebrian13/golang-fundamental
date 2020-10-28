@@ -1,10 +1,10 @@
-package main
+package improvecode
 
 import (
 	"fmt"
 )
 
-func main() {
+func improvecode() {
 
 	planCapacities := []float64{30, 30, 30, 60, 60, 100}
 	activePlants := []int{0, 1}
