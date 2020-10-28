@@ -1,8 +1,8 @@
-package main
+package passbyreference
 
 import "fmt"
 
-func main() {
+func passbyreference() {
 	message := "Hello World."
 	sayHello(&message)
 	fmt.Println(message)
