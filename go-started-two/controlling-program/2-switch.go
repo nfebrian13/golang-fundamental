@@ -1,10 +1,10 @@
-package main
+package switcexp
 
 type HTTPRequest struct {
 	Method string
 }
 
-func main() {
+func switcexp() {
 	r := HTTPRequest{Method: "GET"}
 
 	switch r.Method {
