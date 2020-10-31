@@ -25,7 +25,7 @@ func startWebApps() {
 	(di sini url tersebut kita sebut sebagai rute/route). */
 
 	http.HandleFunc("/", handlerIndex)
-	http.HandleFunc("/about", handlerAbout)
+	// http.HandleFunc("/about", handlerAbout)
 	http.HandleFunc("/hello", handlerHello)
 
 	http.Handle("/static/",
@@ -62,11 +62,10 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
 	}
 } */
 
-
 /* handlerIndex solusi render view menggunakan template.ParseGlob.
    kekurangan template.ParseGlob jika banyak views di dalam satu project dan semua view tersebut
-   tidak terpakai atau terpakai sebagian maka parsing akan sia sia 
-*/
+   tidak terpakai atau terpakai sebagian maka parsing akan sia sia
+
 func handlerIndex(w http.ResponseWriter, r *http.Request) {
 	var tmpl, err = template.ParseGlob("views/*")
 	var data = M{"name": "Batman"}
@@ -74,12 +73,12 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
-}
+} */
 
 /* handlerAbout solusi render view menggunakan template.ParseGlob.
    kekurangan template.ParseGlob jika banyak views di dalam satu project dan semua view tersebut
-   tidak terpakai atau terpakai sebagian maka parsing akan sia sia 
-*/
+   tidak terpakai atau terpakai sebagian maka parsing akan sia sia
+
 func handlerAbout(w http.ResponseWriter, r *http.Request) {
 	var tmpl, err = template.ParseGlob("views/*")
 	var data = M{"name": "Batman"}
@@ -87,7 +86,34 @@ func handlerAbout(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+} */
+
+/*
+func handlerIndex(w http.ResponseWriter, r *http.Request) {
+	var data = M{"name": "Batman"}
+	var tmpl = template.Must(template.ParseFiles(
+		"views/index.html",
+		"views/_header.html",
+		"views/_message.html",
+	))
+	var err = tmpl.ExecuteTemplate(w, "index", data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
+
+func handlerAbout(w http.ResponseWriter, r *http.Request) {
+	var data = M{"name": "Batman"}
+	var tmpl = template.Must(template.ParseFiles(
+		"views/about.html",
+		"views/_header.html",
+		"views/_message.html",
+	))
+	var err = tmpl.ExecuteTemplate(w, "about", data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+} */
 
 /*
 func handlerIndex(w http.ResponseWriter, r *http.Request) {
@@ -98,4 +124,24 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
 func handlerHello(w http.ResponseWriter, r *http.Request) {
 	var message = "Hello world!"
 	w.Write([]byte(message))
+}
+
+type Person struct {
+	Name    string
+	Gender  string
+	Hobbies []string
+}
+
+func handlerIndex(w http.ResponseWriter, r *http.Request) {
+	var person = Person{
+		Name:    "Bruce Wayne",
+		Gender:  "male",
+		Hobbies: []string{"Reading Books", "Traveling", "Buying things"},
+		// Info:    models.Info{"Wayne Enterprises", "Gotham City"},
+	}
+
+	var tmpl = template.Must(template.ParseFiles("views/view.html"))
+	if err := tmpl.Execute(w, person); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }
