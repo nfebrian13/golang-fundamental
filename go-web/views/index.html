@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
     <head>
         <link rel="stylesheet" href="/static/site.css" />
@@ -7,4 +7,18 @@
     <body>
         <p>Welcome {{.name}}</p>
     </body>
+</html>-->
+
+{{define "index"}}
+<!DOCTYPE html>
+<html>
+    <head>
+        {{template "_header"}}
+    </head>
+    <body>
+        {{template "_message"}}
+        <p>Page: Index</p>
+        <p>Welcome {{.name}}</p>
+    </body>
 </html>
+{{end}}

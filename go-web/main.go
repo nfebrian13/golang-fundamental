@@ -4,8 +4,9 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
-	"path"
 )
+
+type M map[string]interface{}
 
 func main() {
 	startWebApps()
@@ -22,8 +23,9 @@ func startWebApps() {
 	/* HandleFunc, Fungsi ini digunakan untuk routing,
 	menentukan aksi dari sebuah url tertentu ketika diakses
 	(di sini url tersebut kita sebut sebagai rute/route). */
+
 	http.HandleFunc("/", handlerIndex)
-	http.HandleFunc("/index", handlerIndex)
+	http.HandleFunc("/about", handlerAbout)
 	http.HandleFunc("/hello", handlerHello)
 
 	http.Handle("/static/",
@@ -41,9 +43,11 @@ func startWebApps() {
 	}
 }
 
+/*
 func handlerIndex(w http.ResponseWriter, r *http.Request) {
-	/* Fungsi Join ini digunakan untuk menggabungkan folder atau file
-	   atau keduanya menjadi sebuah path */
+	// Fungsi Join ini digunakan untuk menggabungkan folder atau file
+	// atau keduanya menjadi sebuah path
+
 	var filepath = path.Join("views", "index.html")
 	var tmpl, err = template.ParseFiles(filepath)
 	if err != nil {
@@ -51,12 +55,35 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var data = map[string]interface{}{
-		"title": "Learning Golang Web",
-		"name":  "Batman",
-	}
-
+	var data = M{"name": "Batman"}
 	err = tmpl.Execute(w, data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+} */
+
+
+/* handlerIndex solusi render view menggunakan template.ParseGlob.
+   kekurangan template.ParseGlob jika banyak views di dalam satu project dan semua view tersebut
+   tidak terpakai atau terpakai sebagian maka parsing akan sia sia 
+*/
+func handlerIndex(w http.ResponseWriter, r *http.Request) {
+	var tmpl, err = template.ParseGlob("views/*")
+	var data = M{"name": "Batman"}
+	err = tmpl.ExecuteTemplate(w, "index", data)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+/* handlerAbout solusi render view menggunakan template.ParseGlob.
+   kekurangan template.ParseGlob jika banyak views di dalam satu project dan semua view tersebut
+   tidak terpakai atau terpakai sebagian maka parsing akan sia sia 
+*/
+func handlerAbout(w http.ResponseWriter, r *http.Request) {
+	var tmpl, err = template.ParseGlob("views/*")
+	var data = M{"name": "Batman"}
+	err = tmpl.ExecuteTemplate(w, "about", data)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
