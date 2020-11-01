@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <title>Learning html/template Actions</title>
+    </head>
+    <body>
+        <p>
+            {{.SayHello "Gotham citizen" "You are our hero!"}}
+        </p>
+        <table>
+            <tr>
+                {{/* example how to use actions */}}
+                <td>{{"Name"}}</td>
+                <td>: {{.Name}}</td>
+            </tr>
+            <tr>
+                <td>{{"Alias"}}</td>
+                <td>: {{.Alias}}</td>
+            </tr>
+            <tr>
+                <td>Friends</td>
+                <td>: 
+                    {{range $index, $elem := .Friends}}
+                        {{$elem}},
+                    {{end}}
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

@@ -24,7 +24,16 @@ func startWebApps() {
 	menentukan aksi dari sebuah url tertentu ketika diakses
 	(di sini url tersebut kita sebut sebagai rute/route). */
 
-	http.HandleFunc("/", handlerIndex)
+	http.HandleFunc("/", handlerHttpMethodRequest)
+
+	// http.HandleFunc("/index", handlerRenderViewString)
+	// http.HandleFunc("/", handlerRenderRedirectIndex)
+
+	// http.HandleFunc("/", handlerRenderSpecific)
+	// http.HandleFunc("/test", handlerRenderSpecificTest)
+
+	// http.HandleFunc("/", handlerIndexSuperhero)
+	// http.HandleFunc("/", handlerIndex)
 	// http.HandleFunc("/about", handlerAbout)
 	http.HandleFunc("/hello", handlerHello)
 
@@ -126,10 +135,20 @@ func handlerHello(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte(message))
 }
 
+type Info struct {
+	Affiliation string
+	Address     string
+}
+
 type Person struct {
 	Name    string
 	Gender  string
 	Hobbies []string
+	Info    Info
+}
+
+func (t Info) GetAffiliationDetailInfo() string {
+	return "have 31 divisions"
 }
 
 func handlerIndex(w http.ResponseWriter, r *http.Request) {
@@ -137,11 +156,82 @@ func handlerIndex(w http.ResponseWriter, r *http.Request) {
 		Name:    "Bruce Wayne",
 		Gender:  "male",
 		Hobbies: []string{"Reading Books", "Traveling", "Buying things"},
-		// Info:    models.Info{"Wayne Enterprises", "Gotham City"},
+		Info:    Info{"Wayne Enterprises", "Gotham City"},
 	}
 
 	var tmpl = template.Must(template.ParseFiles("views/view.html"))
 	if err := tmpl.Execute(w, person); err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+type Superhero struct {
+	Name    string
+	Alias   string
+	Friends []string
+}
+
+func (s Superhero) SayHello(from string, message string) string {
+	return fmt.Sprintf("%s said: \"%s\"", from, message)
+}
+
+func handlerIndexSuperhero(w http.ResponseWriter, r *http.Request) {
+	var person = Superhero{
+		Name:    "Bruce Wayne",
+		Alias:   "Batman",
+		Friends: []string{"Superman", "Flash", "Green Lantern"},
+	}
+
+	var tmpl = template.Must(template.ParseFiles("views/view_batman.html"))
+	if err := tmpl.Execute(w, person); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func handlerRenderSpecific(w http.ResponseWriter, r *http.Request) {
+	var tmpl = template.Must(template.New("index").ParseFiles("views/view_render_specific.html"))
+	if err := tmpl.Execute(w, nil); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func handlerRenderSpecificTest(w http.ResponseWriter, r *http.Request) {
+	var tmpl = template.Must(template.New("test").ParseFiles("views/view_render_specific.html"))
+	if err := tmpl.Execute(w, nil); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+const (
+	view string = `<html>
+    <head>
+        <title>Template</title>
+    </head>
+    <body>
+        <h1>Hello</h1>
+    </body>
+	</html>`
+)
+
+func handlerRenderViewString(w http.ResponseWriter, r *http.Request) {
+	var tmpl = template.Must(template.New("main-template").Parse(view))
+	if err := tmpl.Execute(w, nil); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+func handlerRenderRedirectIndex(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "/index", http.StatusTemporaryRedirect)
+
+}
+
+/* handler http method */
+func handlerHttpMethodRequest(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case "POST":
+		w.Write([]byte("post"))
+	case "GET":
+		w.Write([]byte("get"))
+	default:
+		http.Error(w, "", http.StatusBadRequest)
 	}
 }
